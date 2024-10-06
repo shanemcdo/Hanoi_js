@@ -7,6 +7,7 @@ let sleep_slider;
 
 class Hanoi {
 	moves = 0
+	cancelled = false;
 
 	constructor(disks) {
 		this.disks = disks;
@@ -17,17 +18,16 @@ class Hanoi {
 	}
 
 	async move(from, to, temp, count) {
-		if(count === 0) return 0;
-		let result = 1;
-		result += await this.move(from, temp, to, count - 1);
+		if(count === 0 || this.cancelled) return;
+		await this.move(from, temp, to, count - 1);
 		this.towers[to].push(this.towers[from].pop());
 		this.draw();
 		await sleep(sleep_slider.value());
-		result += await this.move(temp, to, from, count - 1);
-		return result;
+		await this.move(temp, to, from, count - 1);
 	}
 
 	draw() {
+		if(this.cancelled) return;
 		background('white');
 		const baseWidth = windowWidth / 3 * 0.8;
 		const height = windowHeight / this.disks * 0.8;
@@ -71,7 +71,8 @@ function setup() {
 }
 
 async function move() {
+	hanoi.cancelled = true;
 	const disks = disks_slider.value();
-	const hanoi = new Hanoi(disks);
+	hanoi = new Hanoi(disks);
 	await hanoi.move(0, 2, 1, disks);
 }
