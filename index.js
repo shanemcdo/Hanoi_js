@@ -53,6 +53,7 @@ function setup() {
 	const disks_counter = createP('3').position(120, 5);
 	disks_slider = createSlider(3, 20, 3).position(10, 20);
 	disks_slider.elt.onchange = () => {
+		hanoi.cancelled = true;
 		hanoi = new Hanoi(disks_slider.value());
 		hanoi.draw();
 		disks_counter.elt.innerText = disks_slider.value();
