@@ -60,7 +60,7 @@ function setup() {
 	};
 	createP('Sleep').position(10, 40);
 	const sleep_counter = createP('200 ms').position(100, 40);
-	sleep_slider = createSlider(25, 3000, 200).position(10, 55);
+	sleep_slider = createSlider(0, 3000, 200).position(10, 55);
 	sleep_slider.elt.onchange = () => {
 		sleep_counter.elt.innerText = `${sleep_slider.value()} ms`;
 	};
