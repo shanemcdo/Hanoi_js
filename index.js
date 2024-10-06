@@ -4,6 +4,7 @@ function sleep(ms) {
 
 let disks_slider;
 let sleep_slider;
+let moves_counter;
 
 class Hanoi {
 	moves = 0
@@ -21,6 +22,7 @@ class Hanoi {
 		if(count === 0 || this.cancelled) return;
 		await this.move(from, temp, to, count - 1);
 		this.towers[to].push(this.towers[from].pop());
+		this.moves += 1;
 		this.draw();
 		await sleep(sleep_slider.value());
 		await this.move(temp, to, from, count - 1);
@@ -29,6 +31,7 @@ class Hanoi {
 	draw() {
 		if(this.cancelled) return;
 		background('white');
+		moves_counter.elt.innerText = `${this.moves} moves`;
 		const baseWidth = windowWidth / 3 * 0.8;
 		const height = windowHeight / this.disks * 0.8;
 		for(let i = 0; i < 3; i++) {
@@ -65,6 +68,7 @@ function setup() {
 		sleep_counter.elt.innerText = `${sleep_slider.value()} ms`;
 	};
 	const button = createButton('Run').position(10, 80);
+	moves_counter = createP('0 moves').position(windowWidth / 2, 30);
 	button.mousePressed(move);
 	rectMode(CENTER);
 	colorMode(HSB);
